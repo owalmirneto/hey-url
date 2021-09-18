@@ -73,3 +73,10 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
+# https://github.com/InterageASH/application-query
+gem 'interage-query', '~> 0.1.3'
+# https://github.com/amatsuda/active_decorator
+gem 'active_decorator', '~> 1.4'
+
+gem 'simple_form', '~> 5.1'
