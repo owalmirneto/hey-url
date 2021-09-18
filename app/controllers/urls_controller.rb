@@ -2,6 +2,7 @@
 
 class UrlsController < ApplicationController
   before_action :set_urls, only: :index
+  before_action :set_url, only: :show
 
   def index
     @url = Url.new
@@ -19,32 +20,9 @@ class UrlsController < ApplicationController
   end
 
   def show
-    @url = Url.new(short_url: 'ABCDE', original_url: 'http://google.com', created_at: Time.now)
-    # implement queries
-    @daily_clicks = [
-      ['1', 13],
-      ['2', 2],
-      ['3', 1],
-      ['4', 7],
-      ['5', 20],
-      ['6', 18],
-      ['7', 10],
-      ['8', 20],
-      ['9', 15],
-      ['10', 5]
-    ]
-    @browsers_clicks = [
-      ['IE', 13],
-      ['Firefox', 22],
-      ['Chrome', 17],
-      ['Safari', 7]
-    ]
-    @platform_clicks = [
-      ['Windows', 13],
-      ['macOS', 22],
-      ['Ubuntu', 17],
-      ['Other', 7]
-    ]
+    @daily_clicks = grouper.daily
+    @browsers_clicks = grouper.browsers
+    @platform_clicks = grouper.platform
   end
 
   def visit
@@ -58,7 +36,19 @@ class UrlsController < ApplicationController
     params.require(:url).permit(:original_url)
   end
 
+  def query
+    @query ||= UrlsQuery.new
+  end
+
   def set_urls
-    @urls = UrlsQuery.new.latest
+    @urls = query.latest
+  end
+
+  def set_url
+    @url = query.find_by!(short_url: params[:url])
+  end
+
+  def grouper
+    @grouper ||= GroupedClicks.new(@url)
   end
 end

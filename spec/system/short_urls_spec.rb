@@ -11,20 +11,6 @@ require 'webdrivers'
 describe 'Short Urls' do
   before { driven_by :selenium, using: :headless_chrome }
 
-  describe 'show' do
-    it 'shows a panel of stats for a given short url' do
-      visit url_path('ABCDE')
-      # expect page to show the short url
-    end
-
-    context 'when not found' do
-      it 'shows a 404 page' do
-        visit url_path('NOTFOUND')
-        # expect page to be a 404
-      end
-    end
-  end
-
   describe 'create' do
     before { visit root_path }
 
