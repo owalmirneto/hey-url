@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e;
+
+echo 'Run rubocop';
+bin/rubocop
+
+echo 'Run rspec';
+bin/rspec
