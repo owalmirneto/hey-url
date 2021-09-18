@@ -8,25 +8,8 @@ require 'webdrivers'
 # Official Guides about System Testing
 # https://api.rubyonrails.org/v5.2/classes/ActionDispatch/SystemTestCase.html
 
-RSpec.describe 'Short Urls', type: :system do
-  before do
-    driven_by :selenium, using: :headless_chrome
-    # If using Firefox
-    # driven_by :selenium, using: :firefox
-    #
-    # If running on a virtual machine or similar that does not have a UI, use
-    # a headless driver
-    # driven_by :selenium, using: :headless_chrome
-    # driven_by :selenium, using: :headless_firefox
-  end
-
-  describe 'index' do
-    it 'shows a list of short urls' do
-      visit root_path
-      expect(page).to have_text('HeyURL!')
-      # expect page to show 10 urls
-    end
-  end
+describe 'Short Urls' do
+  before { driven_by :selenium, using: :headless_chrome }
 
   describe 'show' do
     it 'shows a panel of stats for a given short url' do
@@ -56,7 +39,6 @@ RSpec.describe 'Short Urls', type: :system do
     let(:created_url) { Url.find_by(original_url: url.original_url) }
 
     context 'when url is valid' do
-
       it 'creates the short url' do
         expect(created_url).to be_present
       end
