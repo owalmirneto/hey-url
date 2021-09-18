@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
 require 'webdrivers'
 
 # WebDrivers Gem
@@ -11,7 +10,7 @@ require 'webdrivers'
 
 RSpec.describe 'Short Urls', type: :system do
   before do
-    driven_by :selenium, using: :chrome
+    driven_by :selenium, using: :headless_chrome
     # If using Firefox
     # driven_by :selenium, using: :firefox
     #
@@ -44,15 +43,25 @@ RSpec.describe 'Short Urls', type: :system do
   end
 
   describe 'create' do
+    before { visit root_path }
+
+    let(:url) { build(:url) }
+
     context 'when url is valid' do
+      before do
+        fill_in 'url_original_url',	with: url.original_url
+
+        click_on('Shorten URL')
+      end
+
+      let(:created_url) { Url.find_by(original_url: url.original_url) }
+
       it 'creates the short url' do
-        visit '/'
-        # add more expections
+        expect(created_url).to be_present
       end
 
       it 'redirects to the home page' do
-        visit '/'
-        # add more expections
+        expect(page).to have_current_path(root_path)
       end
     end
 
