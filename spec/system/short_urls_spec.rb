@@ -47,14 +47,15 @@ RSpec.describe 'Short Urls', type: :system do
 
     let(:url) { build(:url) }
 
+    before do
+      fill_in 'url_original_url',	with: url.original_url
+
+      click_on('Shorten URL')
+    end
+
+    let(:created_url) { Url.find_by(original_url: url.original_url) }
+
     context 'when url is valid' do
-      before do
-        fill_in 'url_original_url',	with: url.original_url
-
-        click_on('Shorten URL')
-      end
-
-      let(:created_url) { Url.find_by(original_url: url.original_url) }
 
       it 'creates the short url' do
         expect(created_url).to be_present
@@ -66,14 +67,14 @@ RSpec.describe 'Short Urls', type: :system do
     end
 
     context 'when url is invalid' do
+      let(:url) { build(:invalid_url) }
+
       it 'does not create the short url and shows a message' do
-        visit '/'
-        # add more expections
+        expect(created_url).to be_nil
       end
 
       it 'redirects to the home page' do
-        visit '/'
-        # add more expections
+        expect(page).to have_current_path(urls_path)
       end
     end
   end

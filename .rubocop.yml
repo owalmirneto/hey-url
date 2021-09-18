@@ -12,6 +12,7 @@ AllCops:
   Exclude:
     - 'bin/*'
     - 'db/schema.rb'
+    - 'config/initializers/simple_form.rb'
   NewCops: enable
 
 Style/Documentation:

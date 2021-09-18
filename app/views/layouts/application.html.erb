@@ -18,6 +18,10 @@
       </div>
     </nav>
     <main role="main" class="container">
+    <% if flash[:notice] %>
+      <div class="card-panel notice deep-orange"><%= flash[:notice] %></div>
+    <% end %>
+
       <%= yield %>
     </main>
   </body>

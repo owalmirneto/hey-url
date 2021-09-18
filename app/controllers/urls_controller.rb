@@ -1,14 +1,10 @@
 # frozen_string_literal: true
 
 class UrlsController < ApplicationController
+  before_action :set_urls, only: :index
+
   def index
-    # recent 10 short urls
     @url = Url.new
-    @urls = [
-      Url.new(short_url: 'ABCDE', original_url: 'http://google.com', created_at: Time.now),
-      Url.new(short_url: 'ABCDG', original_url: 'http://facebook.com', created_at: Time.now),
-      Url.new(short_url: 'ABCDF', original_url: 'http://yahoo.com', created_at: Time.now)
-    ]
   end
 
   def create
@@ -17,6 +13,7 @@ class UrlsController < ApplicationController
     if @url.save
       redirect_to root_path, notice: t('.successfully')
     else
+      set_urls
       render :index
     end
   end
@@ -59,5 +56,9 @@ class UrlsController < ApplicationController
 
   def url_params
     params.require(:url).permit(:original_url)
+  end
+
+  def set_urls
+    @urls = UrlsQuery.new.latest
   end
 end
