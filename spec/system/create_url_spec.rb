@@ -46,18 +46,4 @@ describe 'Short Urls' do
       end
     end
   end
-
-  describe 'visit' do
-    it 'redirects the user to the original url' do
-      visit visit_path('ABCDE')
-      # add more expections
-    end
-
-    context 'when not found' do
-      it 'shows a 404 page' do
-        visit visit_path('NOTFOUND')
-        # expect page to be a 404
-      end
-    end
-  end
 end

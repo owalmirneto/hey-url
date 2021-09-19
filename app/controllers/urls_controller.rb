@@ -2,7 +2,7 @@
 
 class UrlsController < ApplicationController
   before_action :set_urls, only: :index
-  before_action :set_url, only: :show
+  before_action :set_url, only: %i[show visit]
 
   def index
     @url = Url.new
@@ -26,8 +26,9 @@ class UrlsController < ApplicationController
   end
 
   def visit
-    # params[:short_url]
-    render plain: 'redirecting to url...'
+    TrackClick.call(@url, browser)
+
+    redirect_to @url.original_url
   end
 
   private
@@ -50,5 +51,9 @@ class UrlsController < ApplicationController
 
   def grouper
     @grouper ||= GroupedClicks.new(@url)
+  end
+
+  def browser
+    @browser ||= Browser.new(request.headers['HTTP_USER_AGENT'])
   end
 end

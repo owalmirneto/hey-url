@@ -2,20 +2,16 @@
 
 require 'webdrivers'
 
-describe 'Url details' do
+describe 'Visit original url' do
   before { driven_by :selenium, using: :headless_chrome }
 
-  describe 'show' do
-    before { visit url_path(url.short_url) }
+  describe 'visit' do
+    before { visit visit_path(url.short_url) }
 
     let(:url) { create(:url) }
 
-    it 'shows a panel of stats for a given short url' do
-      expect(page).to have_content(url.original_url)
-    end
-
-    it 'shows created date short url' do
-      expect(page).to have_content(url.created_at.strftime('%b %d, %Y'))
+    xit 'redirects the user to the original url' do
+      expect(page.current_url).to eq(url.original_url)
     end
 
     context 'when not found' do
