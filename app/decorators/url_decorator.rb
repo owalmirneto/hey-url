@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 module UrlDecorator
+  def shortened_url
+    visit_url(short_url)
+  end
+
   def link_to_show
-    link_to visit_url(short_url), url_path(short_url)
+    link_to shortened_url, url_path(short_url)
   end
 
   def link_to_original_url

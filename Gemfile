@@ -78,5 +78,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'interage-query', '~> 0.1.3'
 # https://github.com/amatsuda/active_decorator
 gem 'active_decorator', '~> 1.4'
-
+# https://github.com/heartcombo/simple_form
 gem 'simple_form', '~> 5.1'
+# https://github.com/rails-api/active_model_serializers
+gem 'active_model_serializers', '~> 0.10.12'
