@@ -1,52 +1,59 @@
 # frozen_string_literal: true
 
 class UrlsController < ApplicationController
+  before_action :set_urls, only: :index
+  before_action :set_url, only: %i[show visit]
+
   def index
-    # recent 10 short urls
     @url = Url.new
-    @urls = [
-      Url.new(short_url: 'ABCDE', original_url: 'http://google.com', created_at: Time.now),
-      Url.new(short_url: 'ABCDG', original_url: 'http://facebook.com', created_at: Time.now),
-      Url.new(short_url: 'ABCDF', original_url: 'http://yahoo.com', created_at: Time.now)
-    ]
   end
 
   def create
-    raise 'add some code'
-    # create a new URL record
+    @url = Url.new(url_params)
+
+    if @url.save
+      redirect_to root_path, notice: t('.successfully')
+    else
+      set_urls
+      render :index
+    end
   end
 
   def show
-    @url = Url.new(short_url: 'ABCDE', original_url: 'http://google.com', created_at: Time.now)
-    # implement queries
-    @daily_clicks = [
-      ['1', 13],
-      ['2', 2],
-      ['3', 1],
-      ['4', 7],
-      ['5', 20],
-      ['6', 18],
-      ['7', 10],
-      ['8', 20],
-      ['9', 15],
-      ['10', 5]
-    ]
-    @browsers_clicks = [
-      ['IE', 13],
-      ['Firefox', 22],
-      ['Chrome', 17],
-      ['Safari', 7]
-    ]
-    @platform_clicks = [
-      ['Windows', 13],
-      ['macOS', 22],
-      ['Ubuntu', 17],
-      ['Other', 7]
-    ]
+    @daily_clicks = grouper.daily
+    @browsers_clicks = grouper.browsers
+    @platform_clicks = grouper.platform
   end
 
   def visit
-    # params[:short_url]
-    render plain: 'redirecting to url...'
+    TrackClick.call(@url, browser)
+
+    redirect_to @url.original_url
+  end
+
+  private
+
+  def url_params
+    params.require(:url).permit(:original_url)
+  end
+
+  def query
+    @query ||= UrlsQuery.new
+  end
+
+  def set_urls
+    @urls = query.latest
+  end
+
+  def set_url
+    @url = query.find_by!(short_url: params[:url])
+  end
+
+  def grouper
+    @grouper ||= GroupedClicks.new(@url)
+  end
+
+  def browser
+    @browser ||= Browser.new(request.headers['HTTP_USER_AGENT'])
   end
 end

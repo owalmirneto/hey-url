@@ -49,6 +49,10 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'rspec-rails', '~> 3.7'
+  # https://github.com/rweng/pry-rails
+  gem 'pry-rails', '~> 0.3.9'
+  # https://github.com/faker-ruby/faker
+  gem 'faker', '~> 2.19'
 end
 
 group :development do
@@ -69,3 +73,12 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+
+# https://github.com/InterageASH/application-query
+gem 'interage-query', '~> 0.1.3'
+# https://github.com/amatsuda/active_decorator
+gem 'active_decorator', '~> 1.4'
+# https://github.com/heartcombo/simple_form
+gem 'simple_form', '~> 5.1'
+# https://github.com/rails-api/active_model_serializers
+gem 'active_model_serializers', '~> 0.10.12'
